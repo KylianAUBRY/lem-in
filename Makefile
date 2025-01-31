@@ -1,10 +1,10 @@
 NAME	=	lem-in
 
-SRCS	=	main.c	\
-			error.c \
-			utils.c \
-			parcing.c \
-			map_func.c \
+SRCS	=	src/main.c	\
+			src/error.c \
+			src/utils.c \
+			src/parcing.c \
+			src/map_func.c \
 			
 		
 OBJ =	${SRCS:.c=.o}

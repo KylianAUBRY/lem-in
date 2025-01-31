@@ -1,4 +1,4 @@
-#include "lem-in.h"
+#include "../include/lem-in.h"
 
 int ft_strlen(const char *str)
 {

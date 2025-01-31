@@ -1,4 +1,4 @@
-# include "lem-in.h"
+# include "../include/lem-in.h"
 
 t_room *get_room(t_map *map, char *name)
 {

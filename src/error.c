@@ -1,4 +1,4 @@
-#include "lem-in.h"
+#include "../include/lem-in.h"
 
 void free_all(t_map* map, ...)
 {

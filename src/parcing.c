@@ -1,4 +1,4 @@
-#include "lem-in.h"
+#include "../include/lem-in.h"
 
 int links_or_rooms(char *line) // -1 == error, 0 == rooms, 1 == links
 {

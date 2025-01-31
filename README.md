@@ -26,5 +26,15 @@ make
 ## 📝 Usage
 Run the program by providing a map as input:
 ```sh
-./lem-in < map.txt
+./lem-in < maps/map.txt
+```
+
+## 📂 Project Structure
+```
+lem-in/
+│── src/        # Project source files
+│── includes/   # Header files
+│── maps/       # Example maps
+│── Makefile    # Project compilation
+│── README.md   # Documentation
 ```

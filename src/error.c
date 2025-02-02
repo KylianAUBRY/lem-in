@@ -14,6 +14,7 @@ void free_all(t_map* map, ...)
 		free_link(map->link);
 		free_room(map->room);
 		free_lem(map->lem);
+		free_multi_path(map->multi_path);
 		free(map);
 	}
 }

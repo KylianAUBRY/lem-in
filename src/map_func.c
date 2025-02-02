@@ -146,6 +146,17 @@ void free_path(t_path *path)
 	}
 }
 
+void free_multi_path(t_multi_path *multi_path)
+{
+	if (multi_path)
+	{
+		free_multi_path(multi_path->next);
+		if (multi_path->paths)
+			free(multi_path->paths);
+		free(multi_path);
+	}
+}
+
 t_path *copy_path(t_map *map, t_path *path)
 {
 	t_path *new_path = (t_path *)malloc(sizeof(t_path));
@@ -195,4 +206,20 @@ void reset_visited(t_map *map)
 		room->visited = 0;
 		room = room->next;
 	}
+}
+
+t_multi_path *copy_multi_path(t_map *map, t_multi_path *multi_path)
+{
+	t_multi_path *new_multi_path = (t_multi_path *)malloc(sizeof(t_multi_path));
+	if (!new_multi_path)
+		handle_error("malloc failed", free_all, map, NULL);
+	new_multi_path->size = multi_path->size;
+	new_multi_path->paths = (t_path **)malloc(sizeof(t_path *) * (multi_path->size + 1));
+	if (!new_multi_path->paths)
+		handle_error("malloc failed", free_all, map, new_multi_path, NULL);
+	for (int i = 0; i < multi_path->size; i++)
+		new_multi_path->paths[i] = multi_path->paths[i];
+	new_multi_path->paths[multi_path->size] = NULL;
+	new_multi_path->next = NULL;
+	return new_multi_path;
 }

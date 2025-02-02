@@ -12,6 +12,15 @@
 
 /* ==================== structure ==================== */
 
+typedef struct s_multi_path
+{
+	struct s_path	**paths;
+	int size;
+	int score;
+
+	struct s_multi_path	*next;
+}				t_multi_path;
+
 
 typedef struct s_path
 {
@@ -21,7 +30,6 @@ typedef struct s_path
 
 	struct s_path	*next;
 }				t_path;
-
 
 
 typedef struct s_room
@@ -58,6 +66,7 @@ typedef struct s_map
 	t_link	*link;
 	t_lem	*lem;
 	t_path	*path;
+	t_multi_path	*multi_path;
 }				t_map;
 
 /* ==================== function utils ==================== */
@@ -83,6 +92,10 @@ void parcing(t_map *map);
 
 void chr_path(t_map *map, t_path *path);
 void get_path(t_map *map);
+int nb_path_max(t_map *map);
+int no_shared_room(t_multi_path *multi_path, t_path *path);
+void chr_multi_path(t_map *map, t_multi_path *multi_path, int max_path, t_path *path);
+void get_multi_path(t_map *map, int max_path);
 
 /* ==================== function map func ==================== */
 
@@ -96,7 +109,9 @@ void free_link(t_link *link);
 void free_room(t_room *room);
 void free_lem(t_lem *lem);
 void free_path(t_path *path);
+void free_multi_path(t_multi_path *multi_path);
 t_path *copy_path(t_map *map, t_path *path);
 void reset_visited(t_map *map);
 void add_room_to_path(t_map *map, t_path *path, t_room *room);
 void dell_room_to_path(t_path *path);
+t_multi_path *copy_multi_path(t_map *map, t_multi_path *multi_path);

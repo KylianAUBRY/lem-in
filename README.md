@@ -54,7 +54,7 @@ Concerning the algorithm used, everything is custom-built.
    ```
    This formula helps balance between shorter paths and the distribution of ants to minimize congestion.
 
-### Resolution Algorithm
+### Resolution Algorithm (algo.c)
 - **Calculating the Maximum Number of Simultaneous Paths:**  
   I begin by determining the maximum number of paths that can be used simultaneously. This is based on:
   - The number of rooms connected directly to the **start** and **end** rooms. For example, if only 2 rooms are connected to the end but 10 are connected to the start, the maximum number of simultaneous paths is 2. There's no point in starting 10 ants at once if only 2 can enter the end room simultaneously.

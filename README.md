@@ -54,18 +54,18 @@ Concerning the algorithm used, everything is custom-built.
    ```
    This formula helps balance between shorter paths and the distribution of ants to minimize congestion.
 
-3. **Grouping Paths:**  
-   I then create "groups of paths" that do not share any rooms in common. Each group is assigned a score:
-   ```
-   score = work in progress
-   ```
-   This approach helps optimize the movement by avoiding conflicts between ants on different paths.
-
 ### Resolution Algorithm
 - **Calculating the Maximum Number of Simultaneous Paths:**  
   I begin by determining the maximum number of paths that can be used simultaneously. This is based on:
   - The number of rooms connected directly to the **start** and **end** rooms. For example, if only 2 rooms are connected to the end but 10 are connected to the start, the maximum number of simultaneous paths is 2. There's no point in starting 10 ants at once if only 2 can enter the end room simultaneously.
   - Additionally, if the number of ants is greater than or equal to the smaller of the two counts (rooms connected to start or end), this also limits the effective number of simultaneous paths.
+
+- **Grouping Paths:**  
+   I then create "groups of paths" that do not share any rooms in common. Each group is assigned a score:
+   ```
+   score = work in progress
+   ```
+   This approach helps optimize the movement by avoiding conflicts between ants on different paths.
 
 - **In Progress:**  
   The resolution algorithm is currently under development. The goal is to efficiently assign ants to paths based on their scores, optimizing for the least number of turns required for all ants to reach the exit.

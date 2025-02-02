@@ -64,9 +64,9 @@ Concerning the algorithm used, everything is custom-built.
    I then create "groups of paths" that do not share any rooms in common. Each group is assigned a score:
 
 
-	\[
+	$$
 	T_{\text{min}} = \min \left\{ T \, \middle| \, \sum_{i=0}^{P-1} \max(0, T - p[i] + 1) \geq X \right\}
-	\]
+	$$
 
 	### Explication des termes :
 	- \( T_{\text{min}} \) : Le nombre minimal de tours nécessaire pour que toutes les fourmis atteignent la fin.

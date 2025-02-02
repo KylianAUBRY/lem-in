@@ -93,6 +93,9 @@ void parcing(t_map *map);
 void chr_path(t_map *map, t_path *path);
 void get_path(t_map *map);
 int nb_path_max(t_map *map);
+
+/* ==================== function algo ==================== */
+
 int no_shared_room(t_multi_path *multi_path, t_path *path);
 void chr_multi_path(t_map *map, t_multi_path *multi_path, int max_path, t_path *path);
 void get_multi_path(t_map *map, int max_path);

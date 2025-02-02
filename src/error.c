@@ -10,6 +10,7 @@ void free_all(t_map* map, ...)
 	va_end(args);
 	if (map)
 	{
+		free_path(map->path);
 		free_link(map->link);
 		free_room(map->room);
 		free_lem(map->lem);

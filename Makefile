@@ -5,6 +5,7 @@ SRCS	=	src/main.c	\
 			src/utils.c \
 			src/parcing.c \
 			src/map_func.c \
+			src/path.c \
 			
 		
 OBJ =	${SRCS:.c=.o}

@@ -43,34 +43,49 @@ t_room *add_room(t_map *map, char *line)
 		return NULL;
 	room->name = ft_strdup_char(line, ' ');
 	if (!room->name)
-		handle_error("malloc failed", free_all, map, line);
+		handle_error("malloc failed", free_all, map, line, NULL);
 	while (line && *line && *line != ' ')
 		line++;
+	if (line == NULL || *line == '\0')
+		handle_error("the coordinates of the rooms must be numbers", free_all, map, line, NULL);
+	line++;
+	int i = 0;
+	while (line[i] && line[i] != ' ')
+		i++;
+	if (line[i] == '\0')
+		handle_error("the coordinates of the rooms must be numbers", free_all, map, line, NULL);
+	line[i] = '\0';
 	room->x = ft_atoi(line);
-	while (line && *line && *line != ' ')
-		line++;
+	line += i + 1;
 	room->y = ft_atoi(line);
+	room->visited = 0;
 	room->next = map->room;
 	map->room = room;
 	if (room->x < 0 || room->y < 0)
-		handle_error("the coordinates of the rooms must be numbers and positive", free_all, map, line);
+		handle_error("the coordinates of the rooms must be numbers and positive", free_all, map, line, NULL);
 	return room;
 }
 
 t_link *add_link(t_map *map, char *line)
 {
+	int i = 0;
 	t_link *link = (t_link *)malloc(sizeof(t_link));
 	if (!link)
 		return NULL;
-	t_room *room1 = get_room(map, ft_strdup_char(line, '-'));
+	while (line[i] && line[i] != '-')
+		i++;
+	line[i] = '\0';
+	t_room *room1 = get_room(map, line);
 	if (!room1)
-		handle_error("the room of the link does not exist", free_all, map, line, link);
-	while (line && *line && *line != '-')
-		line++;
-	line++;
-	t_room *room2 = get_room(map, ft_strdup(line));
+		handle_error("the room of the link does not exist", free_all, map, line, link, NULL);
+	line += i + 1;
+	t_room *room2 = get_room(map, line);
 	if (!room2)
-		handle_error("the room of the link does not exist", free_all, map, line, link);
+		handle_error("the room of the link does not exist", free_all, map, line, link, NULL);
+	if (get_link(map, room1, room2))
+		handle_error("the link already exists", free_all, map, line, link, NULL);
+	if (room1 == room2)
+		handle_error("the link must connect two different rooms", free_all, map, line, link, NULL);
 	link->room1 = room1;
 	link->room2 = room2;
 	link->next = map->link;
@@ -103,6 +118,8 @@ void free_room(t_room *room)
 {
 	if (room)
 	{
+		if (room->links)
+			free(room->links);
 		free_room(room->next);
 		free(room->name);
 		free(room);
@@ -115,5 +132,67 @@ void free_lem(t_lem *lem)
 	{
 		free_lem(lem->next);
 		free(lem);
+	}
+}
+
+void free_path(t_path *path)
+{
+	if (path)
+	{
+		free_path(path->next);
+		if (path->size > 0)
+			free(path->rooms);
+		free(path);
+	}
+}
+
+t_path *copy_path(t_map *map, t_path *path)
+{
+	t_path *new_path = (t_path *)malloc(sizeof(t_path));
+	if (!new_path)
+		handle_error("malloc failed", free_all, map, NULL);
+	new_path->size = path->size;
+	new_path->rooms = (t_room **)malloc(sizeof(t_room *) * (5000));
+	if (!new_path->rooms)
+		handle_error("malloc failed", free_all, map, new_path, NULL);
+	for (int i = 0; i <= path->size; i++)
+		new_path->rooms[i] = path->rooms[i];
+	new_path->next = NULL;
+	return new_path;
+}
+
+void add_room_to_path(t_map *map, t_path *path, t_room *room)
+{
+	if (path->size == 0)
+	{
+		path->rooms = (t_room **)malloc(sizeof(t_room *) * 5000);
+		if (!path->rooms)
+			handle_error("malloc failed", free_all, map, path, NULL);
+	}
+	else if (path->size == 4998)
+		handle_error("the path is too long (4999 is a bit too much for me)", free_all, map, NULL);
+	path->rooms[path->size] = room;
+	path->size++;
+	path->rooms[path->size] = NULL;
+}
+
+void dell_room_to_path(t_path *path)
+{
+	path->size--;
+	if (path->size == 0)
+	{
+		free(path->rooms);
+	}
+	else
+		path->rooms[path->size] = NULL;
+}
+
+void reset_visited(t_map *map)
+{
+	t_room *room = map->room;
+	while (room)
+	{
+		room->visited = 0;
+		room = room->next;
 	}
 }

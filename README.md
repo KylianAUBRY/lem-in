@@ -63,7 +63,26 @@ Concerning the algorithm used, everything is custom-built.
 - **Grouping Paths:**  
    I then create "groups of paths" that do not share any rooms in common. Each group is assigned a score:
    ```
-   score = work in progress
+	La formule pour calculer le nombre minimal de tours est la suivante :
+
+	\[
+	T_{\text{min}} = \min \left\{ T \, \middle| \, \sum_{i=0}^{P-1} \max(0, T - p[i] + 1) \geq X \right\}
+	\]
+
+	### Explication des termes :
+	- \( T_{\text{min}} \) : Le nombre minimal de tours nécessaire pour que toutes les fourmis atteignent la fin.
+	- \( P \) : Le nombre total de chemins disponibles.
+	- \( p[i] \) : La longueur du chemin \( i \) (en nombre de rooms).
+	- \( X \) : Le nombre total de fourmis à déplacer.
+	- \( \max(0, T - p[i] + 1) \) : Cela représente le nombre de fourmis qui peuvent arriver à la fin sur le chemin \( i \) en \( T \) tours :
+	- \( p[i] \) est le nombre de tours que prend la première fourmi pour arriver à la fin.
+	- Chaque fourmi suivante peut arriver après un tour supplémentaire.
+	- Si \( T \) est inférieur à \( p[i] \), aucune fourmi ne pourra arriver sur ce chemin.
+	- L'objectif est de trouver la plus petite valeur de \( T \) qui satisfait la condition : la somme des fourmis arrivant sur tous les chemins doit être égale ou supérieure à \( X \).
+
+	### Remarque :
+	La fonction \(\max(0, T - p[i] + 1)\) est utilisée pour s'assurer qu'on ne compte pas de fourmis avant le moment où elles peuvent atteindre la fin (c'est-à-dire avant que \( T \) soit supérieur ou égal à \( p[i] \)).
+
    ```
    This approach helps optimize the movement by avoiding conflicts between ants on different paths.
 

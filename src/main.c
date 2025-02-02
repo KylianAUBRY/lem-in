@@ -50,7 +50,7 @@ void print_path(t_map *map)
 	while (path)
 	{
 		int i = 0;
-		printf("path :%d\n", j);
+		printf("path :%d   score :%d\n", j, path->score);
 		while (path->rooms[i])
 		{
 			printf("%s ", path->rooms[i]->name);
@@ -69,7 +69,7 @@ void print_multi_path(t_map *map)
 	while (multi_path)
 	{
 		int i = 0;
-		printf("multi_path :%d\n", j);
+		printf("multi_path :%d   score : %d\n", j, multi_path->score);
 		while (multi_path->paths[i])
 		{
 			printf("\n");
@@ -102,39 +102,8 @@ int main()
 	printf("max_path = %d\n", max_path);
 	print_multi_path(map);
 
+	
 
 	free_all(map, NULL);
 	return 0;
 }
-
-
-//je calcule tout les chemins possibe
-
-//ensuite je calcule tout les double chemin possible
-
-//puis les triple chemin
-
-//etc.. jusqu'a que j'atteigne le plus petit entre le (nombre de sortie et d'entrer) ou que j'en trouve plus
-
-
-//je leur attribue un coup,  ce coup sera calculer celon : 
-
-//le nombre de fourmis  
- 
-//la longueur du plus grand chemin
-
-
-
-
-
-/*
-je stock tout dans une structure en liste chainer, au moment de calculer le score je l'ajoute pour les trier.
-quand j'add 
-
-
-en gros quand je fait mon truc
-en recusrif
-je duplique a chaque fois que je trouve une nouvelle room
-
-quand je reviens en arrriere dans la recursion j'enleve la marque de la room 
-*/

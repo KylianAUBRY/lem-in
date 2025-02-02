@@ -6,12 +6,17 @@ void chr_path(t_map *map, t_path *path)
 	if (path->rooms[i] == map->end)
 	{
 		t_path *new_path = copy_path(map, path);
-		new_path->score = path->size + map->ant;
+		new_path->score = path->size + (map->ant - 1);
 		t_path *tmp = map->path;
 		t_path *tmp2 = NULL;
+		if (!tmp)
+		{
+			map->path = new_path;
+			return ;
+		}
 		while (tmp)
 		{
-			if (tmp->score > new_path->score)
+			if (new_path->score < tmp->score)
 			{
 				new_path->next = tmp;
 				if (tmp == map->path)
@@ -22,9 +27,12 @@ void chr_path(t_map *map, t_path *path)
 			}
 			tmp2 = tmp;
 			tmp = tmp->next;
+			if (!tmp)
+			{
+				tmp2->next = new_path;
+				return ;
+			}
 		}
-		new_path->next = map->path;
-		map->path = new_path;
 		return ;
 	}
 	int j = 0;
@@ -55,7 +63,6 @@ void get_path(t_map *map)
 			handle_error("malloc failed", free_all, map, NULL);
 		new_path->size = 0;
 		add_room_to_path(map, new_path, map->start->links[i]);
-		
 		chr_path(map, new_path);
 		free_path(new_path);
 	}
@@ -93,4 +100,3 @@ int nb_path_max(t_map *map)
 	}
 	return (score < score2) ? score : score2;
 }
-

@@ -65,7 +65,7 @@ Concerning the algorithm used, everything is custom-built.
 
 
 	$$
-	score = \min \left\{ T \mid \sum_{i=0}^{P-1} \max(0, T - p[i] + 1) \geq X \right\}
+	score = \min \{ T \mid \sum_{i=0}^{P-1} \max(0, T - p[i] + 1) \geq X \}
 	$$
 
 	### Explication des termes :

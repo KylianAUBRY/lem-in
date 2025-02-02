@@ -69,13 +69,10 @@ Concerning the algorithm used, everything is custom-built.
 	$$
 
 	### Explication des termes :
-	- \( T_{\text{min}} \) : Le nombre minimal de tours nécessaire pour que toutes les fourmis atteignent la fin.
+	- \( T \) : Le nombre minimal de tours nécessaire pour que toutes les fourmis atteignent la fin.
 	- \( P \) : Le nombre total de chemins disponibles.
 	- \( p[i] \) : La longueur du chemin \( i \) (en nombre de rooms).
 	- \( X \) : Le nombre total de fourmis à déplacer.
-	- \( \max(0, T - p[i] + 1) \) : Cela représente le nombre de fourmis qui peuvent arriver à la fin sur le chemin \( i \) en \( T \) tours :
-	- \( p[i] \) est le nombre de tours que prend la première fourmi pour arriver à la fin.
-	- Chaque fourmi suivante peut arriver après un tour supplémentaire.
 	- Si \( T \) est inférieur à \( p[i] \), aucune fourmi ne pourra arriver sur ce chemin.
 	- L'objectif est de trouver la plus petite valeur de \( T \) qui satisfait la condition : la somme des fourmis arrivant sur tous les chemins doit être égale ou supérieure à \( X \).
 

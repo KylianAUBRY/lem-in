@@ -38,3 +38,22 @@ lem-in/
 │── Makefile    # Project compilation
 │── README.md   # Documentation
 ```
+
+## 📊 Algorithm
+
+### Pathfinding Strategy
+Concerning the algorithm used, everything is custom-built.
+
+1. **Finding All Possible Paths:**  
+   I start by identifying all possible paths from the start room to the exit. This ensures we have a complete overview of potential routes.
+
+2. **Path Scoring System:**  
+   Each path is assigned a score calculated as follows:
+   ```
+   score = number of rooms in the path + (number of ants - 1)
+   ```
+   This formula helps balance between shorter paths and the distribution of ants to minimize congestion.
+
+### Resolution Algorithm
+- **In Progress:**  
+  The resolution algorithm is currently under development. The goal is to efficiently assign ants to paths based on their scores, optimizing for the least number of turns required for all ants to reach the exit.

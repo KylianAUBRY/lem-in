@@ -62,8 +62,7 @@ Concerning the algorithm used, everything is custom-built.
 
 - **Grouping Paths:**  
    I then create "groups of paths" that do not share any rooms in common. Each group is assigned a score:
-   ```
-	La formule pour calculer le nombre minimal de tours est la suivante :
+
 
 	\[
 	T_{\text{min}} = \min \left\{ T \, \middle| \, \sum_{i=0}^{P-1} \max(0, T - p[i] + 1) \geq X \right\}
@@ -83,7 +82,7 @@ Concerning the algorithm used, everything is custom-built.
 	### Remarque :
 	La fonction \(\max(0, T - p[i] + 1)\) est utilisée pour s'assurer qu'on ne compte pas de fourmis avant le moment où elles peuvent atteindre la fin (c'est-à-dire avant que \( T \) soit supérieur ou égal à \( p[i] \)).
 
-   ```
+   
    This approach helps optimize the movement by avoiding conflicts between ants on different paths.
 
 - **In Progress:**  

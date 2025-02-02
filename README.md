@@ -45,12 +45,12 @@ lem-in/
 Concerning the algorithm used, everything is custom-built.
 
 1. **Finding All Possible Paths:**  
-   I start by identifying all possible paths from the start room to the exit. This ensures we have a complete overview of potential routes.
+   I start by identifying all possible paths from the start room to the exit. This ensures we have a complete overview of potential routes. (path.c)
 
 2. **Path Scoring System:**  
    Each path is assigned a score calculated as follows:
    ```
-   score = number of rooms in the path + (number of ants - 1)
+   score = number_of_rooms_in_the_path + (number_of_ants - 1)
    ```
    This formula helps balance between shorter paths and the distribution of ants to minimize congestion.
 

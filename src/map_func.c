@@ -93,13 +93,14 @@ t_link *add_link(t_map *map, char *line)
 	return link;
 }
 
-t_lem *add_lem(t_map *map, int identityNumber, t_room *room)
+t_lem *add_lem(t_map *map, int identityNumber)
 {
 	t_lem *lem = (t_lem *)malloc(sizeof(t_lem));
 	if (!lem)
-		return NULL;
+		handle_error("malloc failed", free_all, map, NULL);
 	lem->identityNumber = identityNumber;
-	lem->room = room;
+	lem->indice = -1;
+	lem->path = NULL;
 	lem->next = map->lem;
 	map->lem = lem;
 	return lem;
@@ -154,6 +155,26 @@ void free_multi_path(t_multi_path *multi_path)
 		if (multi_path->paths)
 			free(multi_path->paths);
 		free(multi_path);
+	}
+}
+
+void dell_lem(t_map *map, int identityNumber)
+{
+	t_lem *lem = map->lem;
+	t_lem *tmp = NULL;
+	while (lem)
+	{
+		if (lem->identityNumber == identityNumber)
+		{
+			if (tmp)
+				tmp->next = lem->next;
+			else
+				map->lem = lem->next;
+			free(lem);
+			return;
+		}
+		tmp = lem;
+		lem = lem->next;
 	}
 }
 

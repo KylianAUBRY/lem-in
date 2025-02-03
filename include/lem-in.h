@@ -53,7 +53,8 @@ typedef struct s_link
 typedef struct s_lem
 {
 	int		identityNumber;
-	t_room	*room;
+	t_path	*path;
+	int indice; //indice pour savoir ou ce situe la forumis, -1 quand elle debute
 	struct s_lem	*next;
 }				t_lem;
 
@@ -77,7 +78,8 @@ char *ft_strdup_char(const char *str, char c);
 char *get_next_line(int fd);
 int	ft_strcmp(const char *s1, const char *s2);
 int ft_atoi(const char *str);
-
+void ft_putnbr(int n);
+void ft_putchar(int c);
 
 /* ==================== function error ==================== */
 
@@ -107,7 +109,8 @@ t_link *get_link(t_map *map, t_room *room1, t_room *room2);
 t_lem *get_lem(t_map *map, int identityNumber);
 t_room *add_room(t_map *map, char *line);
 t_link *add_link(t_map *map, char *line);
-t_lem *add_lem(t_map *map, int identityNumber, t_room *room);
+t_lem *add_lem(t_map *map, int identityNumber);
+void dell_lem(t_map *map, int identityNumber);
 void free_link(t_link *link);
 void free_room(t_room *room);
 void free_lem(t_lem *lem);

@@ -70,10 +70,6 @@ void chr_multi_path(t_map *map, t_multi_path *multi_path, int max_path, t_path *
 			{
 				t_multi_path *tmp = map->multi_path;
 				t_multi_path *tmp2 = NULL;
-				if(!tmp)
-				{
-					map->multi_path = new_multi_path;
-				}
 				while (tmp)
 				{
 					if(tmp->score > new_multi_path->score)
@@ -117,7 +113,33 @@ void get_multi_path(t_map *map, int max_path)
 		multi_path->paths[0] = path;
 		multi_path->paths[1] = NULL;
 		chr_multi_path(map, multi_path, max_path, path);
-		free_multi_path(multi_path);
+		if(map->multi_path == NULL)
+			map->multi_path = multi_path;
+		else
+		{
+			t_multi_path *tmp = map->multi_path;
+			t_multi_path *tmp2 = NULL;
+			while (tmp)
+			{
+				if(multi_path->score <= tmp->score)
+				{
+					multi_path->next = tmp;
+					if (tmp == map->multi_path)
+						map->multi_path = multi_path;
+					else
+						tmp2->next = multi_path;
+					break ;
+				}
+				tmp2 = tmp;
+				tmp = tmp2->next;
+				if (!tmp)
+				{
+					tmp2->next = multi_path;
+					break ;
+				}
+			}
+		}
+		// free_multi_path(multi_path);
 		path = path->next;
 	}
 }

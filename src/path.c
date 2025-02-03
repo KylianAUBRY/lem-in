@@ -55,7 +55,7 @@ void get_path(t_map *map)
 	map->start->visited = 1;
 	for (int i = 0; map->start->links[i]; i++)
 		map->start->links[i]->visited = 1;
-	map->end->visited = 0; // security if start and end are directly connected
+	map->end->visited = 0;
 	for (int i = 0; map->start->links[i]; i++)
 	{
 		t_path *new_path = malloc(sizeof(t_path));

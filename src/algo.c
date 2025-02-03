@@ -139,7 +139,6 @@ void get_multi_path(t_map *map, int max_path)
 				}
 			}
 		}
-		// free_multi_path(multi_path);
 		path = path->next;
 	}
 }

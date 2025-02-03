@@ -187,14 +187,13 @@ void parcing(t_map *map)
 		handle_error("the first line (number of ants) must contain a number greater than 0", free_all, map, NULL);
 	for (line = get_next_line(0); line; line = get_next_line(0))
 	{
-		// printf("line = %s\n", line);
 		if (line[0] == 'L')
 			handle_error("the line must not start with 'L'", free_all, map, line, NULL);
 		else if (line[0] == '\0' || line[0] == '\n')
 		{
 			free (line);
 			break;
-		} else if (line[0] == '#') // commande
+		} else if (line[0] == '#')
 		{
 			if (ft_strcmp(line, "##start") == 0)
 			{

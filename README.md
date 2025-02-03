@@ -82,10 +82,12 @@ Concerning the algorithm used, everything is custom-built.
 
    This approach helps optimize the movement by avoiding conflicts between ants on different paths.
 
-- **In Progress:**  
-  The resolution algorithm is currently under development. The goal is to efficiently assign ants to paths based on their scores, optimizing for the least number of turns required for all ants to reach the exit.
+   This approach helps optimize the movement by avoiding conflicts between ants on different paths.
 
+- **Final Steps:**  
+  To conclude the program, I run the simulation using the group of paths with the smallest score. I print the movements of the ants, and the project is complete. ;)
 
+This project took me 4 days to complete, and it was one of my favorites during my time at 42.
 
 
 

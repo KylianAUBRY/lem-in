@@ -68,18 +68,18 @@ Concerning the algorithm used, everything is custom-built.
 	score = \min \left( T \mid \sum_{i=0}^{P-1} \max(0, T - p[i] + 1) \geq X \right)
 	$$
 
-	### Explication des termes :
-	- \( T \) : Le nombre minimal de tours nécessaire pour que toutes les fourmis atteignent la fin.
-	- \( P \) : Le nombre total de chemins disponibles.
-	- \( p[i] \) : La longueur du chemin \( i \) (en nombre de rooms).
-	- \( X \) : Le nombre total de fourmis à déplacer.
-	- Si \( T \) est inférieur à \( p[i] \), aucune fourmi ne pourra arriver sur ce chemin.
-	- L'objectif est de trouver la plus petite valeur de \( T \) qui satisfait la condition : la somme des fourmis arrivant sur tous les chemins doit être égale ou supérieure à \( X \).
+	
+	### Explanation of Terms:
+	- \( T \): The minimal number of turns required for all ants to reach the end.
+	- \( P \): The total number of available paths.
+	- \( p[i] \): The length of path \( i \) (in number of rooms).
+	- \( X \): The total number of ants to be moved.
+	- If \( T \) is less than \( p[i] \), no ant will be able to reach the end on this path.
+	- The goal is to find the smallest value of \( T \) that satisfies the condition: the sum of ants arriving on all paths must be equal to or greater than \( X \).
 
-	### Remarque :
-	La fonction \(\max(0, T - p[i] + 1)\) est utilisée pour s'assurer qu'on ne compte pas de fourmis avant le moment où elles peuvent atteindre la fin (c'est-à-dire avant que \( T \) soit supérieur ou égal à \( p[i] \)).
+	### Note:
+	The function \(\max(0, T - p[i] + 1)\) is used to ensure that no ants are counted before they can reach the end (i.e., before \( T \) is greater than or equal to \( p[i] \)).
 
-   
    This approach helps optimize the movement by avoiding conflicts between ants on different paths.
 
 - **In Progress:**  

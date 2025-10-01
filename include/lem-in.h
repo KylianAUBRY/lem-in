@@ -80,6 +80,7 @@ int	ft_strcmp(const char *s1, const char *s2);
 int ft_atoi(const char *str);
 void ft_putnbr(int n);
 void ft_putchar(int c);
+void ft_putstr(char *str);
 
 /* ==================== function error ==================== */
 

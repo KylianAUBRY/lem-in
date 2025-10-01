@@ -60,8 +60,52 @@ void print_and_change_of_room(t_map *map, t_lem *lem, int *remaning_ants)
 	}
 }
 
+void draw_room_recursive(t_room *room, t_map *map)
+{
+	if (!room)
+		return ;
+	draw_room_recursive(room->next, map);
+	if (room->name == map->start->name)
+		write(1, "##start\n", 8);
+	else if (room->name == map->end->name)
+		write(1, "##end\n", 6);
+	ft_putstr(room->name);
+	write(1, " ", 1);
+	ft_putnbr(room->x); 
+	write (1, " ", 1);
+	ft_putnbr(room->y);
+	write(1, "\n", 1);
+}
+
+void draw_room(t_map *map)
+{
+	draw_room_recursive(map->room, map);
+}
+
+void draw_links_recursive(t_link *link)
+{
+	if (!link)
+		return ;
+	draw_links_recursive(link->next);
+	ft_putstr(link->room1->name);
+	write(1, "-", 1);
+	ft_putstr(link->room2->name);
+	write(1, "\n", 1);
+}
+
+void draw_links(t_map *map)
+{
+	draw_links_recursive(map->link);
+}
+
 void run_simulation(t_map *map)
 {
+	ft_putnbr(map->ant);
+	write(1, "\n", 1);
+	draw_room(map);
+	draw_links(map);
+	write(1, "\n", 1);
+
 	int remaining_ants = map->ant;
 	for(int i = map->ant; i > 0; i--)
 		add_lem(map, i);
@@ -91,6 +135,7 @@ void run_simulation(t_map *map)
 
 int main() 
 {
+	//char *c = malloc(sizeof (char) * 1000); (void) c ; return 0;
 	t_map *map = init_struct();
 	parcing(map);
 	reset_visited(map);

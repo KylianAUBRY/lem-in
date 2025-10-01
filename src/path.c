@@ -61,10 +61,12 @@ void get_path(t_map *map)
 		t_path *new_path = malloc(sizeof(t_path));
 		if (!new_path)
 			handle_error("malloc failed", free_all, map, NULL);
+		new_path->next = NULL;
 		new_path->size = 0;
 		add_room_to_path(map, new_path, map->start->links[i]);
 		chr_path(map, new_path);
-		free_path(new_path);
+		if (new_path)
+			free_path(new_path);
 	}
 }
 

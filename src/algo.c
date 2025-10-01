@@ -105,6 +105,7 @@ void get_multi_path(t_map *map, int max_path)
 		t_multi_path *multi_path = malloc(sizeof(t_multi_path));
 		if (!multi_path)
 			handle_error("malloc failed", free_all, map, NULL);
+		multi_path->next = NULL;
 		multi_path->size = 1;
 		multi_path->score = path->score;
 		multi_path->paths = (t_path **)malloc(sizeof(t_path *) * (2));

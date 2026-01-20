@@ -1,6 +1,6 @@
 #include "../include/lem-in.h"
 
-void chr_path(t_map *map, t_path *path)
+int chr_path(t_map *map, t_path *path)
 {
 	int i = path->size - 1;
 	if (path->rooms[i] == map->end)
@@ -12,7 +12,7 @@ void chr_path(t_map *map, t_path *path)
 		if (!tmp)
 		{
 			map->path = new_path;
-			return ;
+			return 1;
 		}
 		while (tmp)
 		{
@@ -23,32 +23,71 @@ void chr_path(t_map *map, t_path *path)
 					map->path = new_path;
 				else
 					tmp2->next = new_path;
-				return ;
+				return 1;
 			}
 			tmp2 = tmp;
 			tmp = tmp->next;
 			if (!tmp)
 			{
 				tmp2->next = new_path;
-				return ;
+				return 1;
 			}
 		}
-		return ;
+		return 1;
 	}
 	int j = 0;
+	int res = -2;
 	while (path->rooms[i]->links[j])
 	{
 		if (path->rooms[i]->links[j]->visited == 0)
 		{
 			path->rooms[i]->links[j]->visited = 1;
 			add_room_to_path(map, path, path->rooms[i]->links[j]);
-			chr_path(map, path);
-			path->rooms[i]->links[j]->visited = 0;
+
+			switch (chr_path(map, path))
+			{
+				case -1 : //cas cus de sac
+					break;
+				case 0 : //cas normal
+					res = 0;
+					break;
+				case 1 : //cas ou on a trouve un chemin
+					res = 0;
+					break;
+				case 2: //cas ou on a trouve un chemin et qu'on veut arreter
+					if (res < 0)
+					res = 2;
+					break;
+					//case a refaire suivant note : 
+
+
+			}
+			//path->rooms[i]->links[j]->visited = 0;
 			dell_room_to_path(path);
 		}
 		j++;
 	}
+	return (res == -2) ? 0 : res;
 }
+
+// quand on arrive a la dernière nœud (celle qui ce nomme fin) on explore pas les chemin qui lentoure (ca ne sert a rien) 
+
+
+// il y a une value dans chaque noeud, 
+
+// quand elle est a -1:
+// c'est que c'est un cus de sac, pour quelle soit cus de sac il faut que toute les neud suivant soit aussi des cus de sac OU que la neud n'est pas de lien sauf celui qui nous a permis d'y parvenir, 
+
+// quand elle est a 0 c'est que le chemin n'est pas explorer par l'instance actuelle de l'algo,
+
+// quand elle est a 1 c'est quelle est explorer par l'instance actuelle
+
+// quand elle est a 2;
+// c'est quelle mène a la fin, pour quelle soit a 2 il faut que tout les nœud suivant on ( au moins 1 suivant a 1 et aucun 1 ou 0) OU que un de c'est suivant soit a 1, ATTENTION SI L'ALGO ARRIVE A UN POINT DE DEPART CA SERA JAMAIS 0
+
+
+
+
 
 void get_path(t_map *map)
 {

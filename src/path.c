@@ -74,22 +74,6 @@ int chr_path(t_map *map, t_path *path)
 	return (res == -2) ? 0 : res;
 }
 
-// quand on arrive a la dernière nœud (celle qui ce nomme fin) on explore pas les chemin qui lentoure (ca ne sert a rien) 
-
-
-// il y a une value dans chaque noeud, 
-
-// quand elle est a -1:
-// c'est que c'est un cus de sac, pour quelle soit cus de sac il faut que toute les neud suivant soit aussi des cus de sac OU que la neud n'est pas de lien sauf celui qui nous a permis d'y parvenir, 
-
-// quand elle est a 0 c'est que le chemin n'est pas explorer par l'instance actuelle de l'algo,
-
-// quand elle est a 1 c'est quelle est explorer par l'instance actuelle
-
-// quand elle est a 2;
-// c'est quelle mène a la fin, pour quelle soit a 2 il faut que tout les nœud suivant on ( au moins 1 suivant a 1 et aucun 1 ou 0) OU que un de c'est suivant soit a 1, ATTENTION SI L'ALGO ARRIVE A UN POINT DE DEPART CA SERA JAMAIS 0
-
-
 void get_path(t_map *map)
 {
 	map->start->visited = 1;

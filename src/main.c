@@ -138,11 +138,8 @@ int main()
 	//char *c = malloc(sizeof (char) * 1000); (void) c ; return 0;
 	t_map *map = init_struct();
 	parcing(map);
-	write(1, "parcing done\n", 14);
 	reset_visited(map);
-	write(1, "reset visited done\n", 19);
 	get_path(map);
-	write(1, "get path done\n", 15);
 	int max_path = nb_path_max(map);
 	if (max_path > 1)
 		get_multi_path(map, max_path);

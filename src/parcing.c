@@ -48,40 +48,6 @@ int links_or_rooms(char *line) // -1 == error, 0 == rooms, 1 == links
 	return -1;
 }
 
-void add_start(t_map *map)
-{
-	if (map->start)
-		handle_error("the start room is already defined", map, 0);
-	char *line = get_next_line(0);
-	if (links_or_rooms(line) == 0)
-	{
-		t_room *room = add_room(map, line);
-		map->start = room;
-	}
-	else
-	{
-		handle_error("the line after ##start must be a room", map, 1, line);
-	}
-	free(line);
-}
-
-void add_end(t_map *map)
-{
-	if (map->end)
-		handle_error("the end room is already defined", map, 0);
-	char *line = get_next_line(0);
-	if (links_or_rooms(line) == 0)
-	{
-		t_room *room = add_room(map, line);
-		map->end = room;
-	}
-	else
-	{
-		handle_error("the line after ##end must be a room", map, 1, line);
-	}
-	free(line);
-}
-
 int check_exit_path(t_map *map, t_room *room)
 {
 	room->visited = 1;
@@ -206,7 +172,6 @@ char *get_red_0()
 		buff_final[i_final] = '\0';
 		return buff_final;
 	}
-	// printf("------------\n%s\n------------\n%d\n------------\n", buff, i);
 	while(i >= 0 && buff[i] != '\n')
 	{
 		i--;
@@ -229,12 +194,10 @@ char *get_red_0()
 		i++;
 	}
 	buff_final[i_final] = '\0';
-	// printf("%s", buff_final);
 	if (i >= 0)
 		return buff_final;
 	else
 	{
-		// write(2, "Error: no newline found in input buffer\n", 39);
 		free (buff_final);
 		return get_red_0();
 	}
@@ -242,100 +205,10 @@ char *get_red_0()
 }
 
 
-t_room *add_room2(t_map *map, char *line, char *line_free)
-{
-	int i = 0;
-	t_room *room = (t_room *)malloc(sizeof(t_room));
-	if (!room)
-		handle_error("malloc failed", map, 0);
-	room->name = malloc(sizeof(char) * (ft_strlen(line) + 1));
-	if(!room->name)
-		handle_error("malloc failed", map, 2, room, line_free);
-	while (line && *line && *line != ' ' && *line != '-')
-	{
-		room->name[i] = *line;
-		line++;
-		i++;
-	}
-	room->name[i] = '\0';
-	if(*line == '-')
-	{
-		free(room->name);
-		free(room);
-		return NULL;
-	}
-	if (line == NULL || *line == '\0')
-		handle_error("the coordinates of the rooms must be numbers", map, 2, room, line_free);
-	line++;
-	i = 0;
-	while (line[i] && line[i] != ' ')
-		i++;
-	if (line[i] == '\0')
-		handle_error("the coordinates of the rooms must be numbers", map, 2, room, line_free);
-	line[i] = '\0';
-	room->x = ft_atoi(line);
-	line += i + 1;
-	room->y = ft_atoi(line);
-	if (room->x < 0 || room->y < 0)
-		handle_error("the coordinates of the rooms must be numbers and positive", map, 2, room, line_free);
-	room->visited = 0;
-	room->next = map->room;
-	room->links = NULL;
-	map->room = room;
-	return room;
-}
-
-t_link *add_link2(t_map *map, char *line, char *line_free)
-{
-	// char *tmpLine = line;
-
-	int i = 0;
-	t_link *link = (t_link *)malloc(sizeof(t_link));
-	if (!link)
-		return NULL;
-	// write(1, line, ft_strlen(line));
-	while (line[i] && line[i] != '-')
-		i++;
-	if (line[i] == '\0')
-		handle_error("the link format is not correct", map, 2, link, line_free);
-	line[i] = '\0';
-	// write(1, "\n", 1);
-	// write(1, line, ft_strlen(line));
-	t_room *room1 = get_room(map, line);
-	if (!room1)
-	{
-		handle_error("the room1 of the link does not exist", map, 2, link, line_free);
-		
-	}
-	line += i + 1;
-	t_room *room2 = get_room(map, line);
-	if (!room2)
-	{
-		handle_error("the room2 of the link does not exist", map, 2, link, line_free);
-	}
-	if (get_link(map, room1, room2))
-	{
-		free(link);
-		return NULL;
-		handle_error("the link already exists", map, 2, link, line_free);
-	}
-	if (room1 == room2)
-		handle_error("the link must connect two different rooms3", map, 2, link, line_free);
-	link->room1 = room1;
-	link->room2 = room2;
-	link->next = map->link;
-	map->link = link;
-	return link;
-}
 
 
 void parcing(t_map *map)
 {
-	// char *line = get_next_line(0);
-	// char *linetmp = line;
-	// if (!line)
-	// 	handle_error("empty standard output, please respect the format : \nnumber_of_ants\nthe_rooms\nthe_links", map, 0);
-	// map->ant = ft_atoi(line);
 	int i = 0;
 	char *line = get_red_0();
 	char *line_free = line;
@@ -380,9 +253,6 @@ void parcing(t_map *map)
 				line[i] = '\0';
 				i++;
 			}
-			// printf("%d: line : %s\n", j, line);
-			// write(1, line, ft_strlen(line));
-			// write(1, "\n", 1);
 			if (line[0] == 'L')
 				handle_error("the line must not start with 'L'", map, 1, line_free);
 			else if (line[0] == '#')
@@ -399,7 +269,7 @@ void parcing(t_map *map)
 			}
 			if (link == 0) //c'est donc une room
 			{
-				t_room *room = add_room2(map, line, line_free);
+				t_room *room = add_room(map, line, line_free);
 				if (room == NULL)
 				{
 					if (is_start == 1 || is_end == 1)
@@ -426,8 +296,7 @@ void parcing(t_map *map)
 			}
 			if (link == 1)//c'est un lien
 			{
-				// printf("%s", line);
-				add_link2(map, line, line_free);
+				add_link(map, line, line_free);
 			}
 			line += i;
 			i = 0;
@@ -449,77 +318,3 @@ void parcing(t_map *map)
 	add_link_to_room(map);
 	verif_map(map);
 }
-/*
-
-void parcing(t_map *map)
-{
-	int state = 0;
-	errno = 0;
-	char *line = get_next_line(0);
-	if (!line)
-	{
-		if (errno == 0)
-			handle_error("empty standard output, please respect the format : \nnumber_of_ants\nthe_rooms\nthe_links", map, 0);
-		else
-			handle_error(strerror(errno), map, 0);
-	}
-	map->ant = ft_atoi(line);
-	free(line);
-	if (map->ant < 0)
-		handle_error("the first line (number of ants) must contain only numbers", map, 0);
-	else if (map->ant == 0)
-		handle_error("the first line (number of ants) must contain a number greater than 0", map, 0);
-	for (line = get_next_line(0); line; line = get_next_line(0))
-	{
-		if (line[0] == 'L')
-			handle_error("the line must not start with 'L'", map, 1, line);
-		else if (line[0] == '\0' || line[0] == '\n')
-		{
-			free (line);
-			break;
-		} else if (line[0] == '#')
-		{
-			if (ft_strcmp(line, "##start") == 0)
-			{
-				free (line);
-				add_start(map);
-			}
-			else if (ft_strcmp(line, "##end") == 0)
-			{
-				free (line);
-				add_end(map);
-			}
-			else
-				free (line);
-			continue;
-		}
-		if (state == 1)
-			add_link(map, line);
-		else if (add_room(map, line) == NULL)
-		{
-			state = 1;
-			add_link(map, line);
-		}
-		// 
-		// switch (links_o_rooms(line))
-		// {
-		// 	case -1: //error
-		// 		handle_error("the line must contain a room or a link", map, 1, line);
-		// 		break;
-		// 	case 0: //rooms
-		// 		add_room(map, line);
-		// 		break;
-		// 	case 1: //links
-		// 		add_link(map, line);
-		// 		break;
-		// }
-		// 
-		free(line);
-	}
-	if (errno)
-		handle_error(strerror(errno), map, 0);
-	
-	add_link_to_room(map);
-	verif_map(map);
-}
-*/

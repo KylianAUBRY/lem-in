@@ -36,15 +36,16 @@ t_lem *get_lem(t_map *map, int identityNumber)
 	return NULL;
 }
 
-t_room *add_room(t_map *map, char *line)
+
+t_room *add_room(t_map *map, char *line, char *line_free)
 {
 	int i = 0;
 	t_room *room = (t_room *)malloc(sizeof(t_room));
 	if (!room)
-		handle_error("malloc failed", map, 1, line);
+		handle_error("malloc failed", map, 0);
 	room->name = malloc(sizeof(char) * (ft_strlen(line) + 1));
 	if(!room->name)
-		handle_error("malloc failed", map, 2, room, line);
+		handle_error("malloc failed", map, 2, room, line_free);
 	while (line && *line && *line != ' ' && *line != '-')
 	{
 		room->name[i] = *line;
@@ -52,11 +53,6 @@ t_room *add_room(t_map *map, char *line)
 		i++;
 	}
 	room->name[i] = '\0';
-	// room->name = ft_strdup_char(line, ' ');
-	// if (!room->name)
-	// 	handle_error("malloc failed", map, 1, line);
-	// while (line && *line && *line != ' ')
-	// 	line++;
 	if(*line == '-')
 	{
 		free(room->name);
@@ -64,19 +60,19 @@ t_room *add_room(t_map *map, char *line)
 		return NULL;
 	}
 	if (line == NULL || *line == '\0')
-		handle_error("the coordinates of the rooms must be numbers", map, 2, line, room);
+		handle_error("the coordinates of the rooms must be numbers", map, 2, room, line_free);
 	line++;
 	i = 0;
 	while (line[i] && line[i] != ' ')
 		i++;
 	if (line[i] == '\0')
-		handle_error("the coordinates of the rooms must be numbers", map, 2, line, room);
+		handle_error("the coordinates of the rooms must be numbers", map, 2, room, line_free);
 	line[i] = '\0';
 	room->x = ft_atoi(line);
 	line += i + 1;
 	room->y = ft_atoi(line);
 	if (room->x < 0 || room->y < 0)
-		handle_error("the coordinates of the rooms must be numbers and positive", map, 2, line, room);
+		handle_error("the coordinates of the rooms must be numbers and positive", map, 2, room, line_free);
 	room->visited = 0;
 	room->next = map->room;
 	room->links = NULL;
@@ -84,33 +80,37 @@ t_room *add_room(t_map *map, char *line)
 	return room;
 }
 
-t_link *add_link(t_map *map, char *line)
+t_link *add_link(t_map *map, char *line, char *line_free)
 {
-	char *tmpLine = line;
 	int i = 0;
 	t_link *link = (t_link *)malloc(sizeof(t_link));
 	if (!link)
 		return NULL;
 	while (line[i] && line[i] != '-')
 		i++;
-	tmpLine[i] = '\0';
-	t_room *room1 = get_room(map, tmpLine);
+	if (line[i] == '\0')
+		handle_error("the link format is not correct", map, 2, link, line_free);
+	line[i] = '\0';
+	t_room *room1 = get_room(map, line);
 	if (!room1)
-		handle_error("the room of the link does not exist1", map, 2, line, link);
-	tmpLine += i + 1;
-	t_room *room2 = get_room(map, tmpLine);
+	{
+		handle_error("the room1 of the link does not exist", map, 2, link, line_free);
+		
+	}
+	line += i + 1;
+	t_room *room2 = get_room(map, line);
 	if (!room2)
-		handle_error("the room of the link does not exist", map, 2, line, link);
+	{
+		handle_error("the room2 of the link does not exist", map, 2, link, line_free);
+	}
 	if (get_link(map, room1, room2))
 	{
-		// write (2, room1->name , ft_strlen(room1->name));
-		// write (2, "-", 1);
-		// write (2, room2->name , ft_strlen(room2->name));
-		// write (1, "\n", 1);
-		handle_error("the link already exists", map, 2, line, link);
+		free(link);
+		return NULL;
+		handle_error("the link already exists", map, 2, link, line_free);
 	}
 	if (room1 == room2)
-		handle_error("the link must connect two different rooms3", map, 2, line, link);
+		handle_error("the link must connect two different rooms3", map, 2, link, line_free);
 	link->room1 = room1;
 	link->room2 = room2;
 	link->next = map->link;

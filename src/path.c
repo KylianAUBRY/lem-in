@@ -42,16 +42,21 @@ int chr_path(t_map *map, t_path *path)
 		if (path->rooms[i]->links[j]->visited == 0)
 		{
 			path->rooms[i]->links[j]->visited = 1;
-			add_room_to_path(map, path, path->rooms[i]->links[j]);
+			if (add_room_to_path(map, path, path->rooms[i]->links[j]) == -1)
+			{
+				return 0;
+			}
 
 			switch (chr_path(map, path))
 			{
 				case -1 : //cas cus de sac
+					if (res < 0)
+						res = -1;
 					break;
 				case 0 : //cas normal
 					res = 0;
 					break;
-				case 1 : //cas ou on a trouve un chemin
+				case 1 : //explorer par l'instance actuelle
 					res = 0;
 					break;
 				case 2: //cas ou on a trouve un chemin et qu'on veut arreter
@@ -59,14 +64,13 @@ int chr_path(t_map *map, t_path *path)
 					res = 2;
 					break;
 					//case a refaire suivant note : 
-
-
 			}
 			//path->rooms[i]->links[j]->visited = 0;
 			dell_room_to_path(path);
 		}
 		j++;
 	}
+	return 0;
 	return (res == -2) ? 0 : res;
 }
 
@@ -86,9 +90,6 @@ int chr_path(t_map *map, t_path *path)
 // c'est quelle mène a la fin, pour quelle soit a 2 il faut que tout les nœud suivant on ( au moins 1 suivant a 1 et aucun 1 ou 0) OU que un de c'est suivant soit a 1, ATTENTION SI L'ALGO ARRIVE A UN POINT DE DEPART CA SERA JAMAIS 0
 
 
-
-
-
 void get_path(t_map *map)
 {
 	map->start->visited = 1;
@@ -99,7 +100,7 @@ void get_path(t_map *map)
 	{
 		t_path *new_path = malloc(sizeof(t_path));
 		if (!new_path)
-			handle_error("malloc failed", free_all, map, NULL);
+			handle_error("malloc failed", map, 0);
 		new_path->next = NULL;
 		new_path->size = 0;
 		add_room_to_path(map, new_path, map->start->links[i]);

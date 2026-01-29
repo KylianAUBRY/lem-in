@@ -9,7 +9,7 @@
 # include <errno.h>
 # include <stdarg.h>
 
-
+# define PATH_SIZE 500//5000
 /* ==================== structure ==================== */
 
 typedef struct s_multi_path
@@ -21,7 +21,6 @@ typedef struct s_multi_path
 	struct s_multi_path	*next;
 }				t_multi_path;
 
-
 typedef struct s_path
 {
 	struct s_room	**rooms;
@@ -30,7 +29,6 @@ typedef struct s_path
 
 	struct s_path	*next;
 }				t_path;
-
 
 typedef struct s_room
 {
@@ -85,7 +83,7 @@ void ft_putstr(char *str);
 /* ==================== function error ==================== */
 
 void free_all(t_map* map, ...);
-void handle_error(const char *message, void (*cleanup)(t_map *, ...), ...);
+void handle_error(const char *message, t_map *map, int num_ptrs, ...);
 
 /* ==================== function parcing ==================== */
 
@@ -93,7 +91,7 @@ void parcing(t_map *map);
 
 /* ==================== function path ==================== */
 
-void chr_path(t_map *map, t_path *path);
+int chr_path(t_map *map, t_path *path);
 void get_path(t_map *map);
 int nb_path_max(t_map *map);
 
@@ -119,6 +117,6 @@ void free_path(t_path *path);
 void free_multi_path(t_multi_path *multi_path);
 t_path *copy_path(t_map *map, t_path *path);
 void reset_visited(t_map *map);
-void add_room_to_path(t_map *map, t_path *path, t_room *room);
+int add_room_to_path(t_map *map, t_path *path, t_room *room);
 void dell_room_to_path(t_path *path);
 t_multi_path *copy_multi_path(t_map *map, t_multi_path *multi_path);

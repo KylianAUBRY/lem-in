@@ -139,7 +139,7 @@ void ft_buf_cut(char *dest)
 
 char *get_next_line(int fd)
 {
-	static char buff[1024];
+	static char buff[1025];
 	char *dest;
 	int i;
 

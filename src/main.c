@@ -4,7 +4,7 @@ t_map *init_struct()
 {
 	t_map *map = (t_map *)malloc(sizeof(t_map));
 	if (!map)
-		handle_error("malloc failed", NULL, NULL);
+		handle_error("malloc failed", NULL, 0);
 	map->ant = 0;
 	map->path = NULL;
 	map->start = NULL;
@@ -138,12 +138,44 @@ int main()
 	//char *c = malloc(sizeof (char) * 1000); (void) c ; return 0;
 	t_map *map = init_struct();
 	parcing(map);
+	write(1, "parcing done\n", 14);
 	reset_visited(map);
+	write(1, "reset visited done\n", 19);
 	get_path(map);
+	write(1, "get path done\n", 15);
 	int max_path = nb_path_max(map);
 	if (max_path > 1)
 		get_multi_path(map, max_path);
+	else {
+		t_multi_path *multi_path = malloc(sizeof(t_multi_path));
+		if (!multi_path)
+			handle_error("malloc failed", map, 0);
+		multi_path->size = 1;
+		multi_path->score = map->path->score;
+		multi_path->paths = (t_path **)malloc(sizeof(t_path *) * 2);
+		if (!multi_path->paths)
+			handle_error("malloc failed", map, 1, multi_path);
+		multi_path->paths[0] = map->path;
+		multi_path->paths[1] = NULL;
+		multi_path->next = NULL;
+		map->multi_path = multi_path;
+	}
+	write(1, "run simulation\n", 15);
 	run_simulation(map);
-	free_all(map, NULL);
+	// Remove free_all call, handle_error does the cleanup
+	if (map)
+	{
+		if (map->path)
+			free_path(map->path);
+		if (map->link)
+			free_link(map->link);
+		if (map->room)
+			free_room(map->room);
+		if (map->lem)
+			free_lem(map->lem);
+		if (map->multi_path)
+			free_multi_path(map->multi_path);
+		free(map);
+	}
 	return 0;
 }

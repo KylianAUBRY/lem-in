@@ -129,7 +129,8 @@ void run_simulation(t_map *map)
 			print_and_change_of_room(map, lem, &remaining_ants);
 			lem = tmp;
 		}
-		write(1, "\n", 1);
+		if (map->lem)
+			write(1, "\n", 1);
 	}
 }
 
@@ -157,7 +158,6 @@ int main()
 		multi_path->next = NULL;
 		map->multi_path = multi_path;
 	}
-	write(1, "run simulation\n", 15);
 	run_simulation(map);
 	// Remove free_all call, handle_error does the cleanup
 	if (map)

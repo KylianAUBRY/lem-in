@@ -36,7 +36,6 @@ int chr_path(t_map *map, t_path *path)
 		return 1;
 	}
 	int j = 0;
-	int res = -2;
 	while (path->rooms[i]->links[j])
 	{
 		if (path->rooms[i]->links[j]->visited == 0)
@@ -46,32 +45,13 @@ int chr_path(t_map *map, t_path *path)
 			{
 				return 0;
 			}
-
-			switch (chr_path(map, path))
-			{
-				case -1 : //cas cus de sac
-					if (res < 0)
-						res = -1;
-					break;
-				case 0 : //cas normal
-					res = 0;
-					break;
-				case 1 : //explorer par l'instance actuelle
-					res = 0;
-					break;
-				case 2: //cas ou on a trouve un chemin et qu'on veut arreter
-					if (res < 0)
-					res = 2;
-					break;
-					//case a refaire suivant note : 
-			}
-			//path->rooms[i]->links[j]->visited = 0;
+			chr_path(map, path);
+			path->rooms[i]->links[j]->visited = 0;
 			dell_room_to_path(path);
 		}
 		j++;
 	}
 	return 0;
-	return (res == -2) ? 0 : res;
 }
 
 void get_path(t_map *map)

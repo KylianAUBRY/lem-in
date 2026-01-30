@@ -111,6 +111,8 @@ void get_multi_path(t_map *map, int max_path)
 		multi_path->paths = (t_path **)malloc(sizeof(t_path *) * (2));
 		if (!multi_path->paths)
 			handle_error("malloc failed", map, 1, multi_path);
+		multi_path->paths[0] = path;
+		multi_path->paths[1] = NULL;
 		chr_multi_path(map, multi_path, max_path, path);
 		if(map->multi_path == NULL)
 			map->multi_path = multi_path;

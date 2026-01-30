@@ -218,6 +218,26 @@ void parcing(t_map *map)
 			free(line_free);
 		handle_error("empty standard output, please respect the format : \nnumber_of_ants\nthe_rooms\nthe_links", map, 0);
 	}
+	while (line[0] == '#')
+	{
+		while(line[i] && line[i] != '\n')
+		{
+			i++;
+		}
+		if (line[i] == '\n')
+		{
+			i++;
+			line += i;
+			i = 0;
+		}
+		else
+		{
+			free (line_free);
+			line = get_red_0();
+			line_free = line;
+		}
+		
+	}
 	while(line[i] >= '0' && line[i] <= '9')
 	{
 		map->ant = map->ant * 10 + (line[i] - '0');
@@ -308,7 +328,7 @@ void parcing(t_map *map)
 		line_free = line;
 		if (!line || line[0] == '\0')
 		{
-			if(line[0])
+			if(line)
 				free(line_free);
 			break ;
 		}
